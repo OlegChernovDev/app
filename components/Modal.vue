@@ -17,7 +17,12 @@
 <script>
 export default {
 	name: 'Modal',
-	props: ['title'],
+	props: {
+		title: {
+			type: String,
+			default: 'Заголовок'
+		}
+	},
 	data() {
 		return {
 			visible: false

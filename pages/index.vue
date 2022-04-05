@@ -4,18 +4,25 @@
 			<Shop></Shop>
 		</Modal>
 
+		<p>Деньги - {{ money }}</p>
+		<p>Расход - {{ expenses }} Доход - {{ income }}</p>
+		<p>Доходность
+			<span class="badge" v-if="income - expenses == 0">{{ profit }}</span>
+			<span class="badge danger" v-else-if="income - expenses < 0">{{ profit }}</span>
+			<span class="badge success" v-else-if="income - expenses > 0">{{ profit }}</span>
+		</p>
+
 		<div class="row menu">
 			<div class="col col-4">
-				<!--<button class="paper-btn" @click="$refs.shop.open()">
+				<button class="paper-btn" @click="$refs.shop.open()">
 					Рынок
-				</button>-->
-				<div class="test">123</div>
+				</button>
 			</div>
 			<div class="col col-4">
 				<div class="test">123</div>
 			</div>
 			<div class="col col-4">
-<div class="test">123</div>
+		<div class="test">123</div>
 			</div>
 		</div>
 	</div>
@@ -24,6 +31,8 @@
 <script>
 import Modal from "../components/Modal.vue";
 import Shop from "../components/Shop.vue";
+import { mapState } from 'vuex'
+
 export default {
 	name: "IndexPage",
 	methods: {
@@ -32,8 +41,23 @@ export default {
 				console.log(res)
 			);
 		},
+		tik() {
+			setInterval(() => {
+				this.$store.commit("shop/tik");
+				console.log('tik');
+			}, 5000);
+		}
 	},
 	components: { Modal, Shop },
+	computed: {
+		profit() { //доходность
+			return this.$store.state.shop.income - this.$store.state.shop.expenses
+		},
+		...mapState('shop', ['money', 'income', 'expenses']),
+	},
+	mounted() {
+		this.tik();
+	}
 };
 </script>
 <style scoped>
