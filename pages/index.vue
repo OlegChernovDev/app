@@ -4,12 +4,27 @@
 			<Shop></Shop>
 		</Modal>
 
+		<Modal title="Настройки" ref="settings">
+			<Settings></Settings>
+		</Modal>
+
+		<div class="progress margin-bottom">
+			<div :class="`bar w-${Math.floor(money/200)}`"></div>
+		</div>
+
 		<p>Деньги - {{ money }}</p>
 		<p>Расход - {{ expenses }} Доход - {{ income }}</p>
-		<p>Доходность
-			<span class="badge" v-if="income - expenses == 0">{{ profit }}</span>
-			<span class="badge danger" v-else-if="income - expenses < 0">{{ profit }}</span>
-			<span class="badge success" v-else-if="income - expenses > 0">{{ profit }}</span>
+		<p>
+			Доходность
+			<span class="badge" v-if="income - expenses == 0">{{
+				profit
+			}}</span>
+			<span class="badge danger" v-else-if="income - expenses < 0">{{
+				profit
+			}}</span>
+			<span class="badge success" v-else-if="income - expenses > 0">{{
+				profit
+			}}</span>
 		</p>
 
 		<div class="row menu">
@@ -19,10 +34,14 @@
 				</button>
 			</div>
 			<div class="col col-4">
-				<div class="test">123</div>
+				<button class="paper-btn" @click="test">
+					Настройки
+				</button>
 			</div>
 			<div class="col col-4">
-		<div class="test">123</div>
+				<button class="paper-btn" @click="$refs.settings.open()">
+					Настройки
+				</button>
 			</div>
 		</div>
 	</div>
@@ -31,12 +50,14 @@
 <script>
 import Modal from "../components/Modal.vue";
 import Shop from "../components/Shop.vue";
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
+import Settings from "../components/Settings.vue";
 
 export default {
 	name: "IndexPage",
 	methods: {
 		test() {
+			alert(this.$store.state.test)
 			fetch("http://localhost:3000/getCourses").then((res) =>
 				console.log(res)
 			);
@@ -44,23 +65,29 @@ export default {
 		tik() {
 			setInterval(() => {
 				this.$store.commit("shop/tik");
-				console.log('tik');
+				console.log("tik");
 			}, 5000);
-		}
-	},
-	components: { Modal, Shop },
-	computed: {
-		profit() { //доходность
-			return this.$store.state.shop.income - this.$store.state.shop.expenses
 		},
-		...mapState('shop', ['money', 'income', 'expenses']),
+	},
+	components: { Modal, Shop, Settings },
+	computed: {
+		profit() {
+			//доходность
+			return (
+				this.$store.state.shop.income - this.$store.state.shop.expenses
+			);
+		},
+		...mapState("shop", ["money", "income", "expenses"]),
 	},
 	mounted() {
 		this.tik();
-	}
+	},
 };
 </script>
 <style scoped>
+.paper-btn {
+	width: 100%;
+}
 .container {
 	height: 100%;
 }
@@ -68,15 +95,15 @@ export default {
 	margin: 0px;
 }
 .row {
-    justify-content: center;
+	justify-content: center;
 }
 .col {
 	padding: 0px;
 }
 .test {
- margin-left: auto;
-    margin-right: auto;
-    width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
 }
 @media (max-width: 640px) {
 	html,
@@ -94,7 +121,6 @@ export default {
 		background: white;
 		z-index: 10;
 	}
-
 }
 @media (min-width: 320px) {
 	.menu {

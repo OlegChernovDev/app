@@ -27,19 +27,20 @@
 							v-for="item in $store.state.shop.rent"
 							:key="item.id"
 						>
-							<td>{{ item.name }}</td>
-							<td>{{ item.expenses }}</td>
-							<td>{{ item.cost }}</td>
-							<td>{{ item.income }}</td>
-							<td>{{ item.count }}</td>
+							<td data-label="Название">{{ item.name }}</td>
+							<td data-label="В мес.">{{ item.expenses }}</td>
+							<td data-label="Цена">{{ item.cost }}</td>
+							<td data-label="Доход">{{ item.income }}</td>
+							<td data-label="Кол-во.">{{ item.count }}</td>
 							<td>
 								<button
+									class="buy"
 									@click="$store.commit('shop/buy', item.id)"
 									v-if="$store.state.shop.money >= item.cost"
 								>
 									Купить
 								</button>
-								<button disabled v-else>Купить</button>
+								<button class="buy" disabled v-else>Купить</button>
 							</td>
 						</tr>
 					</tbody>
@@ -72,5 +73,86 @@ export default {
 
 .return {
 	width: 150px;
+}
+
+table {
+
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+table tr {
+
+  padding: .35em;
+}
+
+table th,
+table td {
+  padding: .625em;
+  text-align: center;
+}
+
+table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 840px) {
+  table {
+    border: 0;
+  }
+
+.buy {
+	width: 100%;
+}
+  table caption {
+    font-size: 1.3em;
+  }
+
+  table thead {
+    border: none;
+
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  table tr {
+
+    display: block;
+    margin-bottom: .625em;
+  }
+
+  table td {
+    display: block;
+    font-size: .9em;
+    text-align: right;
+  }
+
+  table td::before {
+    /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  table td:last-child {
+    border-bottom: 0;
+  }
 }
 </style>
