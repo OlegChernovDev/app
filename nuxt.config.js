@@ -60,9 +60,24 @@ export default {
 
 	// PWA module configuration: https://go.nuxtjs.dev/pwa
 	pwa: {
+		icon: {
+			source: '@/static/icon.png'
+		},
 		manifest: {
-			name: 'Name app',
-			lang: 'ru'
+			name: 'Экономический кликер',
+			lang: 'ru',
+			short_name: 'Кликер',
+			description: 'Экономический симулятор. Покупай, продавай недвижимость и развивай свою империю',
+			icons: [],
+			start_url: '.',
+			display: 'standalone',
+			background_color: '#e6e7e9',
+
+		},
+		workbox: {
+			importScripts: [
+				'custom-sw.js'
+			],
 		}
 	},
 
