@@ -5,7 +5,7 @@
 			<label for="tab1">Аренда</label>
 
 			<input id="tab2" type="radio" name="tabs" />
-			<label for="tab2">Выкуп</label>
+			<label for="tab2">Покупка</label>
 
 			<input id="tab3" type="radio" name="tabs" />
 			<label for="tab3">Сбережения</label>
@@ -34,8 +34,8 @@
 							<td data-label="Кол-во.">{{ item.count }}</td>
 							<td>
 								<button
-									class="buy"
-									@click="$store.commit('shop/buy', item.id)"
+									class="buy_rent"
+									@click="$store.commit('shop/buy_rent', item.id)"
 									v-if="$store.state.shop.money >= item.cost"
 								>
 									Купить
@@ -47,7 +47,38 @@
 				</table>
 			</div>
 			<div class="content" id="content2">
-				<p>Покупка недвижимости</p>
+				<table>
+					<thead>
+						<tr>
+							<th>Название</th>
+							<th>Цена</th>
+							<th>Доход</th>
+							<th>Кол-во.</th>
+							<th>#</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							v-for="item in $store.state.shop.buy"
+							:key="item.id"
+						>
+							<td data-label="Название">{{ item.name }}</td>
+							<td data-label="Цена">{{ item.cost }}</td>
+							<td data-label="Доход">{{ item.income }}</td>
+							<td data-label="Кол-во.">{{ item.count }}</td>
+							<td>
+								<button
+									class="buy"
+									@click="$store.commit('shop/buy', item.id)"
+									v-if="$store.state.shop.money >= item.cost"
+								>
+									Купить
+								</button>
+								<button class="buy" disabled v-else>Купить</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 			<div class="content" id="content3">
 				<p>Инвестиции в различные компании</p>

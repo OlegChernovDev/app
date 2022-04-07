@@ -32,14 +32,15 @@ export default {
 	],
 
 	// Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-	plugins: [],
+	plugins: [
+	],
 
 	// Auto import components: https://go.nuxtjs.dev/config-components
 	components: true,
 	router: {
 		base: '/',
 		mode: 'hash'
-	  },
+	},
 	// Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
 	buildModules: [],
 	serverMiddleware: ['~/server-middleware/api.js'],
@@ -49,7 +50,7 @@ export default {
 		// https://go.nuxtjs.dev/axios
 		'@nuxtjs/axios',
 		// https://go.nuxtjs.dev/pwa
-		'@nuxtjs/pwa',
+		'@nuxtjs/pwa'
 	],
 
 	// Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -73,11 +74,6 @@ export default {
 			display: 'standalone',
 			background_color: '#e6e7e9',
 
-		},
-		workbox: {
-			importScripts: [
-				'custom-sw.js'
-			],
 		}
 	},
 

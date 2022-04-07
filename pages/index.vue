@@ -9,23 +9,48 @@
 		</Modal>
 
 		<div class="progress margin-bottom">
-			<div :class="`bar w-${Math.floor(money/200)}`"></div>
+			<div :class="`bar w-${Math.floor(money / progress_coef)}`"></div>
 		</div>
 
-		<p>Деньги - {{ money }}</p>
-		<p>Расход - {{ expenses }} Доход - {{ income }}</p>
-		<p>
-			Доходность
-			<span class="badge" v-if="income - expenses == 0">{{
-				profit
-			}}</span>
-			<span class="badge danger" v-else-if="income - expenses < 0">{{
-				profit
-			}}</span>
-			<span class="badge success" v-else-if="income - expenses > 0">{{
-				profit
-			}}</span>
-		</p>
+		<VueSlickCarousel v-bind="settings" ref="carousel">
+			<div class="swipe-block">
+				<p>Деньги - {{ money }}</p>
+				<p>Расход - {{ expenses }} Доход - {{ income }}</p>
+				<p>
+					Доходность
+					<span class="badge" v-if="income - expenses == 0">{{
+						profit
+					}}</span>
+					<span
+						class="badge danger"
+						v-else-if="income - expenses < 0"
+						>{{ profit }}</span
+					>
+					<span
+						class="badge success"
+						v-else-if="income - expenses > 0"
+						>{{ profit }}</span
+					>
+				</p>
+			</div>
+			<div class="swipe-block">2</div>
+			<div class="swipe-block">3</div>
+			<div class="swipe-block">4</div>
+		</VueSlickCarousel>
+
+		<div class="row flex-center">
+			<div class="col col-6">
+				<button class="right" @click="$refs.carousel.prev()">
+					<
+				</button>
+			</div>
+			<div class="col col-6">
+				<button class="" @click="$refs.carousel.next()">></button>
+			</div>
+
+		</div>
+
+		<button @click.prevent="click" id="create-post">Click</button>
 
 		<div class="row menu">
 			<div class="col col-4">
@@ -34,9 +59,7 @@
 				</button>
 			</div>
 			<div class="col col-4">
-				<button class="paper-btn" @click="test">
-					Настройки
-				</button>
+				<button class="paper-btn" @click="test">Настройки</button>
 			</div>
 			<div class="col col-4">
 				<button class="paper-btn" @click="$refs.settings.open()">
@@ -53,11 +76,39 @@ import Shop from "../components/Shop.vue";
 import { mapState } from "vuex";
 import Settings from "../components/Settings.vue";
 
+import VueSlickCarousel from "../node_modules/vue-slick-carousel";
+import "../node_modules/vue-slick-carousel/dist/vue-slick-carousel.css";
+// optional style for arrows & dots
+import "../node_modules/vue-slick-carousel/dist/vue-slick-carousel-theme.css";
+
+//import Driver from '../node_modules/driver.js/dist/driver.min.js';
+//import '../node_modules/driver.js/dist/driver.min.css';
+
 export default {
 	name: "IndexPage",
+	data() {
+		return {
+			//driver: new Driver(),
+			settings: {
+				dots: false,
+				swipeToSlide: true,
+				dotsClass: "slick-dots custom-dot-class",
+				edgeFriction: 0.35,
+				infinite: false,
+				speed: 400,
+				slidesToShow: 1,
+				slidesToScroll: 1,
+				arrows: false,
+			},
+		};
+	},
 	methods: {
+		click() {
+			//this.driver.highlight('#create-post');
+			this.$store.commit("shop/click");
+		},
 		test() {
-			alert(this.$store.state.test)
+			alert(this.$store.state.test);
 			fetch("http://localhost:3000/getCourses").then((res) =>
 				console.log(res)
 			);
@@ -69,7 +120,7 @@ export default {
 			}, 5000);
 		},
 	},
-	components: { Modal, Shop, Settings },
+	components: { Modal, Shop, Settings, VueSlickCarousel },
 	computed: {
 		profit() {
 			//доходность
@@ -77,14 +128,19 @@ export default {
 				this.$store.state.shop.income - this.$store.state.shop.expenses
 			);
 		},
-		...mapState("shop", ["money", "income", "expenses"]),
+		...mapState("shop", ["money", "income", "expenses", "progress_coef"]),
 	},
 	mounted() {
 		this.tik();
+
+
 	},
 };
 </script>
 <style scoped>
+.right {
+	float: right;
+}
 .paper-btn {
 	width: 100%;
 }
@@ -112,6 +168,10 @@ export default {
 		padding: 0;
 		width: 100%;
 		height: 100%;
+	}
+
+	.container {
+		width: 100%;
 	}
 	.menu {
 		position: fixed;

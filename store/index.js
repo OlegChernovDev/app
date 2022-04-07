@@ -5,5 +5,6 @@ export const state = () => ({
 export const mutations = {
 	test(state) {
 		state.test++;
+		console.log('STATE TEST')
 	}
 }
